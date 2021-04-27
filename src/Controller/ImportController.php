@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 namespace App\Controller;
 
@@ -32,13 +33,11 @@ class ImportController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $file = $form->get('file')->getData();
-            dd($file);
             // Open the file
             if (($handle = fopen($file->getPathname(), "r")) !== false) {
                 // Read and process the lines.
                 // Skip the first line if the file includes a header
                 while (($data = fgetcsv($handle)) !== false) {
-                    dd($data);
                     // Do the processing: Map line to entity, validate if needed
                     $entity = new Compte();
                     // Assign fields

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 namespace App\Repository;
 
@@ -17,6 +18,12 @@ class FactureRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Facture::class);
+    }
+
+    public function getRealCall($startDate)
+    {
+        $query = $this->createQueryBuilder('f')
+            ->where('f.duree_reel >= :startDate');
     }
 
     // /**

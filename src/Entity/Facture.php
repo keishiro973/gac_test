@@ -1,4 +1,5 @@
 <?php
+declare(strict_types = 1);
 
 namespace App\Entity;
 
@@ -35,7 +36,7 @@ class Facture
     /**
      * @ORM\Column(type="time", nullable=true)
      */
-    private $dduree_reel;
+    private $duree_reel;
 
     /**
      * @ORM\Column(type="float", nullable=true)
