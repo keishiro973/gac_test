@@ -9,20 +9,8 @@ use Doctrine\ORM\EntityManager;
 
 class Statistics
 {
-    /** @var EntityManager */
-    private $em;
-
     /** @var FactureRepository*/
     private $factureRepo;
-
-    /**
-     * @param EntityManager $em
-     * @required
-     */
-    public function setEm(EntityManager $em): void
-    {
-        $this->em = $em;
-    }
 
     /**
      * @required
@@ -38,6 +26,7 @@ class Statistics
             $startDate = new DateTime('2012-02-15');
         }
 
+        $this->factureRepo->getRealCall($startDate);
         return 0;
     }
 

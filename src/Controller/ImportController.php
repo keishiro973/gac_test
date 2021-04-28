@@ -3,11 +3,13 @@ declare(strict_types = 1);
 
 namespace App\Controller;
 
-use App\Entity\Abonne;
 use App\Entity\Compte;
 use App\Form\CsvImportType;
+use App\Service\Statistics;
+use App\Service\UploadFile;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Validator\Util\ServerParams;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,34 +26,35 @@ class ImportController extends AbstractController
         $this->em = $entityManager;
     }
     /**
-     * @Route("/import", name="import")
+     * @Route("/", name="import")
      */
-    public function index(Request $request): Response
+    public function index(UploadFile $uploadFile, Request $request): Response
     {
         $form = $this->createForm(CsvImportType::class);
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $file = $form->get('file')->getData();
-            // Open the file
-            if (($handle = fopen($file->getPathname(), "r")) !== false) {
-                // Read and process the lines.
-                // Skip the first line if the file includes a header
-                while (($data = fgetcsv($handle)) !== false) {
-                    // Do the processing: Map line to entity, validate if needed
-                    $entity = new Compte();
-                    // Assign fields
-                    $entity->setNumber($data[0]);
-                    $this->em->persist($entity);
-                }
-                fclose($handle);
-                $this->em->flush();
+            $csvFile = $form->get('file')->getData();
+            if ($csvFile) {
+                $uploadFile->importCsv($csvFile);
             }
+            // Open the file
         }
 
         return $this->render('import/index.html.twig', [
             'controller_name' => 'ImportController',
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/stats", name="stats")
+     */
+    public function statistics(Statistics $statistics): Response
+    {
+        $realPaid = $statistics->getReelCallPaid();
+        return $this->render('stats/index.html.twig', [
+            'realPaid' => $realPaid,
         ]);
     }
 }

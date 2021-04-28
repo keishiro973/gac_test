@@ -11,6 +11,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Facture
 {
+    const SMS = 1;
+    const CALL = 2;
+    const INTERNET = 3;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -26,43 +30,53 @@ class Facture
     /**
      * @ORM\Column(type="date")
      */
-    private $event_date;
+    private $eventDate;
 
     /**
      * @ORM\Column(type="time")
      */
-    private $event_time;
+    private $eventTime;
 
     /**
      * @ORM\Column(type="time", nullable=true)
      */
-    private $duree_reel;
+    private $dureeReel;
 
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    private $volume_reel;
+    private $volumeReel;
 
     /**
      * @ORM\Column(type="time", nullable=true)
      */
-    private $duree_facture;
+    private $dureeFacture;
 
     /**
      * @ORM\Column(type="float", nullable=true)
      */
-    private $volume_facture;
+    private $volumeFacture;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $type_facture;
+    private $typeFacture;
 
     /**
      * @ORM\ManyToOne(targetEntity=Abonne::class, inversedBy="factures")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $abonne_id;
+    private $abonne;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $connectionType;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Compte::class, inversedBy="facture_id")
+     */
+    private $compte;
 
     public function getId(): ?int
     {
@@ -83,96 +97,120 @@ class Facture
 
     public function getEventDate(): ?\DateTimeInterface
     {
-        return $this->event_date;
+        return $this->eventDate;
     }
 
-    public function setEventDate(\DateTimeInterface $event_date): self
+    public function setEventDate(\DateTimeInterface $eventDate): self
     {
-        $this->event_date = $event_date;
+        $this->eventDate = $eventDate;
 
         return $this;
     }
 
     public function getEventTime(): ?\DateTimeInterface
     {
-        return $this->event_time;
+        return $this->eventTime;
     }
 
-    public function setEventTime(\DateTimeInterface $event_time): self
+    public function setEventTime(\DateTimeInterface $eventTime): self
     {
-        $this->event_time = $event_time;
+        $this->eventTime = $eventTime;
 
         return $this;
     }
 
-    public function getDdureeReel(): ?\DateTimeInterface
+    public function getDureeReel(): ?\DateTimeInterface
     {
-        return $this->dduree_reel;
+        return $this->dureeReel;
     }
 
-    public function setDdureeReel(?\DateTimeInterface $dduree_reel): self
+    public function setDureeReel(?\DateTimeInterface $dureeReel): self
     {
-        $this->dduree_reel = $dduree_reel;
+        $this->dureeReel = $dureeReel;
 
         return $this;
     }
 
     public function getVolumeReel(): ?float
     {
-        return $this->volume_reel;
+        return $this->volumeReel;
     }
 
-    public function setVolumeReel(?float $volume_reel): self
+    public function setVolumeReel(?float $volumeReel): self
     {
-        $this->volume_reel = $volume_reel;
+        $this->volumeReel = $volumeReel;
 
         return $this;
     }
 
     public function getDureeFacture(): ?\DateTimeInterface
     {
-        return $this->duree_facture;
+        return $this->dureeFacture;
     }
 
-    public function setDureeFacture(?\DateTimeInterface $duree_facture): self
+    public function setDureeFacture(?\DateTimeInterface $dureeFacture): self
     {
-        $this->duree_facture = $duree_facture;
+        $this->dureeFacture = $dureeFacture;
 
         return $this;
     }
 
     public function getVolumeFacture(): ?float
     {
-        return $this->volume_facture;
+        return $this->volumeFacture;
     }
 
-    public function setVolumeFacture(?float $volume_facture): self
+    public function setVolumeFacture(?float $volumeFacture): self
     {
-        $this->volume_facture = $volume_facture;
+        $this->volumeFacture = $volumeFacture;
 
         return $this;
     }
 
     public function getTypeFacture(): ?string
     {
-        return $this->type_facture;
+        return $this->typeFacture;
     }
 
-    public function setTypeFacture(string $type_facture): self
+    public function setTypeFacture(string $typeFacture): self
     {
-        $this->type_facture = $type_facture;
+        $this->typeFacture = $typeFacture;
 
         return $this;
     }
 
-    public function getAbonneId(): ?Abonne
+    public function getAbonne(): ?Abonne
     {
-        return $this->abonne_id;
+        return $this->abonne;
     }
 
-    public function setAbonneId(?Abonne $abonne_id): self
+    public function setAbonne(?Abonne $abonne): self
     {
-        $this->abonne_id = $abonne_id;
+        $this->abonne = $abonne;
+
+        return $this;
+    }
+
+    public function getConnectionType(): ?int
+    {
+        return $this->connectionType;
+    }
+
+    public function setConnectionType(int $connectionType): self
+    {
+        $this->connectionType = $connectionType;
+
+        return $this;
+    }
+
+    public function getCompte(): ?Compte
+    {
+        return $this->compte;
+    }
+
+    public function setCompte(?Compte $compte): self
+    {
+        $this->compte = $compte;
 
         return $this;
     }

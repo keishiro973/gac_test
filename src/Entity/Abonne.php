@@ -64,7 +64,7 @@ class Abonne
     {
         if (!$this->factures->contains($facture)) {
             $this->factures[] = $facture;
-            $facture->setAbonneId($this);
+            $facture->setAbonne($this);
         }
 
         return $this;
@@ -74,8 +74,8 @@ class Abonne
     {
         if ($this->factures->removeElement($facture)) {
             // set the owning side to null (unless already changed)
-            if ($facture->getAbonneId() === $this) {
-                $facture->setAbonneId(null);
+            if ($facture->getAbonne() === $this) {
+                $facture->setAbonne(null);
             }
         }
 

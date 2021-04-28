@@ -4,6 +4,7 @@ declare(strict_types = 1);
 namespace App\Repository;
 
 use App\Entity\Facture;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -20,38 +21,13 @@ class FactureRepository extends ServiceEntityRepository
         parent::__construct($registry, Facture::class);
     }
 
-    public function getRealCall($startDate)
+    public function getRealCall(DateTime $startDate)
     {
         $query = $this->createQueryBuilder('f')
-            ->where('f.duree_reel >= :startDate');
-    }
-
-    // /**
-    //  * @return Facture[] Returns an array of Facture objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('f')
-            ->andWhere('f.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('f.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
+            ->where('f.duree_reel >= :startDate')
+            ->setParameters([
+                'startDate' => $startDate
+            ])
         ;
     }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?Facture
-    {
-        return $this->createQueryBuilder('f')
-            ->andWhere('f.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
