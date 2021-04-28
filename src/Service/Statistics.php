@@ -26,7 +26,12 @@ class Statistics
             $startDate = new DateTime('2012-02-15');
         }
 
-        $this->factureRepo->getRealCall($startDate);
+        $callList = $this->factureRepo->getCallsAfterDate($startDate);
+
+
+        foreach ($callList as $call) {
+            $call->getDureeReel();
+        }
         return 0;
     }
 
