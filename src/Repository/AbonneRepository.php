@@ -48,4 +48,14 @@ class AbonneRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function getListAbonne(): array
+    {
+        return $this->createQueryBuilder('a')
+            ->select('a.reference')
+            ->orderBy('a.reference', 'asc')
+            ->distinct()
+            ->getQuery()
+            ->getScalarResult()
+            ;
+    }
 }

@@ -4,6 +4,28 @@
 
 {% block body %}
     <div class="realPaid">
-        real paid {{ realPaid }}
+        <p>
+            temps total: {{ realPaid }}
+        </p>
+    </div>
+    <div>
+        {% for abonne,facturation in top10 %}
+            <p>
+                {{ abonne }}
+                <ul>
+                {% for factures in facturation %}
+                    {% for facture in factures %}
+                        <li>{{ facture.volumeReel }}</li>
+                    {% endfor %}
+                {% endfor %}
+                </ul>
+            </p>
+        {% endfor %}
+    </div>
+    <div>
+        <p>nombre total de sms: {{ totalSms }}</p>
+    </div>
+    <div>
+        <a href="{{ path('import') }}">Importation d'un csv</a>
     </div>
 {% endblock %}

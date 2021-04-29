@@ -53,8 +53,12 @@ class ImportController extends AbstractController
     public function statistics(Statistics $statistics): Response
     {
         $realPaid = $statistics->getReelCallPaid();
+        $top10 = $statistics->getTop10();
+        $allSms = $statistics->getAllSms();
         return $this->render('stats/index.html.twig', [
             'realPaid' => $realPaid,
+            'top10' => $top10,
+            'totalSms' => $allSms,
         ]);
     }
 }
